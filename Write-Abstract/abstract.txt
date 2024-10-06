@@ -1,0 +1,7 @@
+Connect 4 V.S. ChatGPT
+
+Our project will be a web app that incorporates ChatGPT in order to create a Connect 4 game that can be played against ChatGPT.
+We will make a web app that runs Connect 4, and then queries ChatGPT using its API in order to get its moves. We will have to
+send game data to ChatGPT in order for it to be well informed about the game state, and then we will have to recieve its move
+and translate that into usable data for our web app. We will likely use Github Pages to host our web app, and we will use conventional
+OOP practices and techniques discussed in class throughout development.
