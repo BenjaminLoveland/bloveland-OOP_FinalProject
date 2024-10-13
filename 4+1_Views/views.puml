@@ -1,0 +1,19 @@
+@startuml views
+
+class Connect4Board
+class Player
+class GameController
+class ChatGPTService
+class MoveGenerator
+
+' -- Basic Interactions --
+User --> GameController : Make move
+GameController --> Connect4Board : Update board
+GameController --> ChatGPTService : Request ChatGPT move
+ChatGPTService --> ChatGPT : Send current board state
+ChatGPT --> ChatGPTService : Return move
+ChatGPTService --> MoveGenerator : Parse response
+MoveGenerator --> GameController : Return move
+GameController --> Connect4Board : Update board with ChatGPT move
+
+@enduml

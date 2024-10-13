@@ -1,0 +1,37 @@
+Logical View
+The key components of this program are:
+- UI Component
+    - Connect4Board represents the state of the game board
+    - Player represents either player, either human or ChatGPT
+    - GameController manages the games turns, win conditions, etc.
+- ChatGPT API Interaction
+    - ChatGPTService interacts with the GPT API and queries moves for the AI
+    - MoveGenerator parses the response from ChatGPT and returns its move
+
+Development View
+This is how the system will be organized.
+- Github Pages Files
+    - index.html to render game interface on website
+    - style.css to style the game layout
+    - app.js to handle game logic, webpage interaction, and ChatGPT communication
+- ChatGPTService
+    - A function inside app.js will handle backend calls to the ChatGPT API.
+
+Process View
+This view looks at the system's dynamic behavior during runtime.
+- User's Turn
+    - User chooses a move on the website UI
+    - Connect4Board gets updated, GameController checks win conditions
+    - GameController passes turn to ChatGPT if no win was determined
+- ChatGPT's Turn
+    - ChatGPTService sends the board state to the GPT API
+    - ChatGPT responds with next move
+    - MoveGenerator parses response, which GameController passes to Connect4Board
+
+Physical View
+This view describes how the system is actually implemented.
+The system is a simple web application hosted on Github Pages, with a client side ChatGPT API interaction.
+
+Context View
+This system was primarily designed to be a project through which a group can excersise good OOP practices.
+It also functions as a simple singleplayer game. Anyone with the url can play Connect 4 against ChatGPT.
