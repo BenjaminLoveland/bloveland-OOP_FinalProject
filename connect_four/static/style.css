@@ -1,0 +1,11 @@
+/* public/style.css */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+}
+
+#gameContainer {
+    display: inline-block;
+    text-align: left;
+}
