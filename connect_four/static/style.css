@@ -1,11 +1,65 @@
-/* public/style.css */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    padding: 50px;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    margin-top: 20px;
 }
 
 #gameContainer {
-    display: inline-block;
-    text-align: left;
+    margin: 20px auto;
+    max-width: 500px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#gameStatus {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+#board {
+    display: grid;
+    grid-template-rows: repeat(6, 50px); /* 6 rows for Connect 4 */
+    grid-template-columns: repeat(7, 50px); /* 7 columns for Connect 4 */
+    gap: 5px; /* Spacing between cells */
+    justify-content: center; /* Center the grid horizontally */
+    align-items: center; /* Center the grid vertically */
+    margin: 20px auto;
+    background-color: #2a2a2a; /* Optional: Dark background for contrast */
+    padding: 10px;
+    border-radius: 10px; /* Optional: Rounded border */
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.cell.player1 {
+    background-color: red;
+}
+
+.cell.player2 {
+    background-color: yellow;
+}
+
+.cell:hover {
+    opacity: 0.8;
 }
