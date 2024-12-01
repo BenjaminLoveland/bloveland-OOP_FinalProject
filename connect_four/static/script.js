@@ -1,8 +1,9 @@
-let board = []; // Initialize an empty board
+let board = []; // Game board
 let currentPlayer = 1; // Player 1 starts
 
-// Function to render the game board
+// Render the game board
 function renderBoard() {
+    console.log(`Rendering board... Current Player: ${currentPlayer === 1 ? "Player" : "ChatGPT"}`);
     const boardContainer = document.getElementById('board');
     boardContainer.innerHTML = ''; // Clear the board
 
@@ -19,7 +20,7 @@ function renderBoard() {
                 cellDiv.classList.add('player2');
             }
 
-            // Only allow player moves on empty cells
+            // Allow player interaction only if it's their turn
             if (currentPlayer === 1 && cell === 0) {
                 cellDiv.addEventListener('click', () => handlePlayerMove(colIndex));
             }
@@ -27,23 +28,35 @@ function renderBoard() {
             boardContainer.appendChild(cellDiv);
         });
     });
+
+    console.log("Board rendered successfully.");
 }
 
-// Function to handle the player's move
+
+// Handle player move
 function handlePlayerMove(colIndex) {
+    if (currentPlayer !== 1) {
+        alert("It's not your turn!");
+        return;
+    }
+
     for (let row = board.length - 1; row >= 0; row--) {
         if (board[row][colIndex] === 0) {
             board[row][colIndex] = 1; // Player 1 places a piece
-            currentPlayer = 2; // Switch to ChatGPT's turn
             renderBoard();
+
+            // Pass the turn to ChatGPT
+            currentPlayer = 2;
+            console.log("Player has moved. Passing turn to ChatGPT...");
             fetchChatGPTMove(); // Fetch ChatGPT's move
             return;
         }
     }
+
     alert('This column is full! Choose a different one.');
 }
 
-// Function to fetch ChatGPT's move from the backend
+// Fetch ChatGPT's move
 function fetchChatGPTMove() {
     fetch('/get-move', {
         method: 'POST',
@@ -52,14 +65,25 @@ function fetchChatGPTMove() {
     })
         .then(response => response.json())
         .then(data => {
+            if (data.error) {
+                // Log the error and ChatGPT's response
+                console.error(`Error: ${data.error}`);
+                if (data.chatGPTResponse) {
+                    console.error(`ChatGPT's response: ${data.chatGPTResponse}`);
+                }
+                alert(`Error: ${data.error}`);
+                return;
+            }
+
             const colIndex = data.move - 1; // Convert 1-based column to 0-based index
-            placeChatGPTMove(colIndex); // Place ChatGPT's piece
+            placeChatGPTMove(colIndex, data.chatGPTResponse); // Pass ChatGPT's response
         })
-        .catch(error => console.error('Error fetching move from ChatGPT:', error));
+        .catch(error => {
+            console.error('Error fetching move from ChatGPT:', error);
+        });
 }
 
-// Function to place ChatGPT's move on the board
-function placeChatGPTMove(colIndex) {
+function placeChatGPTMove(colIndex, chatGPTResponse) {
     for (let row = board.length - 1; row >= 0; row--) {
         if (board[row][colIndex] === 0) {
             board[row][colIndex] = 2; // ChatGPT places a piece
@@ -70,10 +94,12 @@ function placeChatGPTMove(colIndex) {
     }
     // Log an error if something went wrong
     console.error(`ChatGPT tried to place a piece in column ${colIndex + 1}, which is full.`);
+    console.error(`ChatGPT's response: ${chatGPTResponse}`);
     alert('ChatGPT attempted to place a piece in a full column!');
 }
 
-// Event listener to start a new game
+
+// Start a new game
 document.getElementById('startGame').addEventListener('click', () => {
     fetch('/start-game', {
         method: 'POST',
@@ -81,6 +107,7 @@ document.getElementById('startGame').addEventListener('click', () => {
     })
         .then(response => response.json())
         .then(data => {
+            console.log("New game started:", data.board);
             board = data.board; // Initialize the board
             currentPlayer = 1; // Player 1 starts
             document.getElementById('gameStatus').innerText = data.message;
@@ -89,5 +116,5 @@ document.getElementById('startGame').addEventListener('click', () => {
         .catch(error => console.error('Error starting new game:', error));
 });
 
-// Initial board rendering
+// Render initial empty board
 renderBoard();

@@ -4,7 +4,7 @@ import openai
 app = Flask(__name__)
 
 # Set your OpenAI API key
-openai.api_key = "API_KEY"
+openai.api_key = "CONTACT_BEN_FOR_API_KEY"
 
 @app.route('/')
 def index():
@@ -33,33 +33,35 @@ def get_move():
         # Convert the board to a string representation for ChatGPT
         board_string = "\n".join([" ".join(map(str, row)) for row in board_state])
 
-        # Query OpenAI for the next move using the updated interface
+        # Query OpenAI for the next move
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a Connect 4 game assistant. Respond with the best column (1 to 7) for the next move."},
-                {"role": "user", "content": f"The current board state is:\n{board_string}\nWhat is the best column to drop the next piece?"}
+                {"role": "system", "content": "You are a Connect 4 game assistant. Respond with the best column (1 to 7) for the next move. Ensure your message only contains the number of the column the next move should go into, and nothing more."},
+                {"role": "user", "content": f"The current board state is:\n{board_string}\n 0 represents a blank space, 1 represents your opponent's piece, and 2 represents your piece. If a column is full, do not place a piece there. What is the best column to drop the next piece?"}
             ]
         )
 
-        # Extract the suggested move (column) from ChatGPT's response
-        suggested_move = response['choices'][0]['message']['content'].strip()
+        # Extract the suggested move from ChatGPT's response
+        suggested_move = response.choices[0].message['content'].strip()
+        print("ChatGPT suggested move:", suggested_move)
 
+        # Validate the suggested move
         if not suggested_move.isdigit() or not (1 <= int(suggested_move) <= 7):
-            return jsonify({"error": "Invalid move received from ChatGPT"}), 500
+            print("Invalid move received from ChatGPT.")
+            return jsonify({"error": "Invalid move received from ChatGPT", "chatGPTResponse": suggested_move}), 500
 
         col_index = int(suggested_move) - 1
         if all(row[col_index] != 0 for row in board_state):
-            return jsonify({"error": "ChatGPT suggested a full column. Try again."}), 500
+            print("ChatGPT suggested a full column.")
+            return jsonify({"error": "ChatGPT suggested a full column", "chatGPTResponse": suggested_move}), 500
 
-        return jsonify({"move": col_index + 1})  # Return 1-based column
+        return jsonify({"move": col_index + 1, "chatGPTResponse": suggested_move})  # Return 1-based column
 
     except Exception as e:
         print(f"Error during /get-move: {e}")
         return jsonify({"error": str(e)}), 500
 
+
 if __name__ == '__main__':
-    try:
-        app.run(debug=True)
-    except Exception as e:
-        print(f"Error starting the server: {e}")
+    app.run(debug=True)
