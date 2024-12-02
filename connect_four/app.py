@@ -46,6 +46,11 @@ def get_move():
             return jsonify({"error": "AI suggested a full column"}), 500
 
         game.make_move(col_index)
+        """
+        winner = game.check_winner()
+        if winner != 0:
+            return: # I'm afraid I don't know html or js.
+        """
         return jsonify({"move": col_index + 1})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
