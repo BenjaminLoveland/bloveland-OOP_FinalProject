@@ -68,6 +68,8 @@ function makeMove(colIndex, player) {
 
 // Fetch ChatGPT's move
 function fetchChatGPTMove() {
+    if (!gameActive) return;
+
     fetch('/get-move', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -82,6 +84,12 @@ function fetchChatGPTMove() {
                     console.error(`ChatGPT's response: ${data.chatGPTResponse}`);
                 }
                 alert(`Error: ${data.error}`);
+                return;
+            }
+
+            if (data.winner) {
+                alert('ChatGPT wins!');
+                gameActive = false;
                 return;
             }
 
@@ -106,7 +114,6 @@ function fetchChatGPTMove() {
             currentPlayer = 1; // Switch back to Player 1 to retry
         });
     currentPlayer = 1;
-    console.log(`Current Player: ${currentPlayer}`);
 }
 
 // Check for a winner
@@ -123,7 +130,6 @@ function checkWinner() {
                 gameActive = false; // Stop the game
                 return true;
             }
-            console.log(data.winner)
             return false;
         })
         .catch(error => {

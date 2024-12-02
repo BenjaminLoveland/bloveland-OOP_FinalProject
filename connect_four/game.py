@@ -87,28 +87,28 @@ class Game:
                         self._board[row][column + i] == self._board[row][column]
                         for i in range(4)
                     ):
-                        print("STOP THERE'S A WINNER")
+                        print(f"Horizontal check at row {row}, columns {column} to {column + 3}")
                         return self._board[row][column]
                     # Vertical Check (|)
                     if row + 3 < self._ROWS and all(
                         self._board[row + i][column] == self._board[row][column]
                         for i in range(4)
                     ):
-                        print("STOP THERE'S A WINNER")
+                        print(f"Vertical check at column {column}, rows {row} to {row + 3}")
                         return self._board[row][column]
                     # Diagonal Check (/)
                     if row + 3 < self._ROWS and column + 3 < self._COLUMNS and all(
                         self._board[row + i][column + i] == self._board[row][column]
                         for i in range(4)
                     ):
-                        print("STOP THERE'S A WINNER")
+                        print(f"Diagonal (/) check starting at row {row}, column {column}")
                         return self._board[row][column]
                     # Diagonal Check (\)
                     if row - 3 >= 0 and column + 3 < self._COLUMNS and all(
                         self._board[row - i][column + i] == self._board[row][column]
                         for i in range(4)
                     ):
-                        print("STOP THERE'S A WINNER")
+                        print(f"Diagonal (\) check starting at row {row}, column {column}")
                         return self._board[row][column]
         return 0
 
