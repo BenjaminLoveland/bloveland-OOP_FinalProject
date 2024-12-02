@@ -33,7 +33,7 @@ class Game:
         Getter for the number of columns in the board.
         """
         return self._COLUMNS
-
+    
     @property
     def board(self) -> List[List[int]]:
         """
@@ -127,7 +127,7 @@ class Game:
         :return: True if the column is full, False otherwise.
         """
         return all(row[column] != 0 for row in self._board)
-
+    
     def to_string(self) -> str:
         """
         Get a string representation of the game board.

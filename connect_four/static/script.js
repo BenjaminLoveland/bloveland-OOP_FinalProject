@@ -32,7 +32,6 @@ function renderBoard() {
     console.log("Board rendered successfully.");
 }
 
-
 // Handle player move
 function handlePlayerMove(colIndex) {
     if (currentPlayer !== 1) {
@@ -40,20 +39,26 @@ function handlePlayerMove(colIndex) {
         return;
     }
 
+    if (makeMove(colIndex, 1)) {
+        renderBoard();
+        // Pass the turn to ChatGPT
+        currentPlayer = 2;
+        console.log("Player has moved. Passing turn to ChatGPT...");
+        fetchChatGPTMove(); // Fetch ChatGPT's move
+    } else {
+        alert('This column is full! Choose a different one.');
+    }
+}
+
+// Make a move on the board
+function makeMove(colIndex, player) {
     for (let row = board.length - 1; row >= 0; row--) {
         if (board[row][colIndex] === 0) {
-            board[row][colIndex] = 1; // Player 1 places a piece
-            renderBoard();
-
-            // Pass the turn to ChatGPT
-            currentPlayer = 2;
-            console.log("Player has moved. Passing turn to ChatGPT...");
-            fetchChatGPTMove(); // Fetch ChatGPT's move
-            return;
+            board[row][colIndex] = player;
+            return true;
         }
     }
-
-    alert('This column is full! Choose a different one.');
+    return false;
 }
 
 // Fetch ChatGPT's move
@@ -76,28 +81,19 @@ function fetchChatGPTMove() {
             }
 
             const colIndex = data.move - 1; // Convert 1-based column to 0-based index
-            placeChatGPTMove(colIndex, data.chatGPTResponse); // Pass ChatGPT's response
+            if (makeMove(colIndex, 2)) {
+                currentPlayer = 1; // Switch back to Player 1's turn
+                renderBoard();
+            } else {
+                console.error(`ChatGPT tried to place a piece in column ${colIndex + 1}, which is full.`);
+                console.error(`ChatGPT's response: ${data.chatGPTResponse}`);
+                alert('ChatGPT attempted to place a piece in a full column!');
+            }
         })
         .catch(error => {
             console.error('Error fetching move from ChatGPT:', error);
         });
 }
-
-function placeChatGPTMove(colIndex, chatGPTResponse) {
-    for (let row = board.length - 1; row >= 0; row--) {
-        if (board[row][colIndex] === 0) {
-            board[row][colIndex] = 2; // ChatGPT places a piece
-            currentPlayer = 1; // Switch back to Player 1's turn
-            renderBoard();
-            return;
-        }
-    }
-    // Log an error if something went wrong
-    console.error(`ChatGPT tried to place a piece in column ${colIndex + 1}, which is full.`);
-    console.error(`ChatGPT's response: ${chatGPTResponse}`);
-    alert('ChatGPT attempted to place a piece in a full column!');
-}
-
 
 // Start a new game
 document.getElementById('startGame').addEventListener('click', () => {

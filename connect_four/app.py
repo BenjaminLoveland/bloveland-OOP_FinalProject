@@ -29,7 +29,7 @@ def start_game():
         return jsonify({"message": "New game started!", "board": game.board})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+    
 
 @app.route('/get-move', methods=['POST'])
 def get_move():
@@ -41,6 +41,7 @@ def get_move():
         if not data or "board" not in data:
             return jsonify({"error": "Invalid board data"}), 400
 
+        game.board = data['board']
         col_index = ai.get_best_move(game.board)
         if game.is_column_full(col_index):
             return jsonify({"error": "AI suggested a full column"}), 500

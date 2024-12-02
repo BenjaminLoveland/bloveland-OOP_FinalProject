@@ -8,10 +8,7 @@ import openai
 class ConnectFourAI:
     def __init__(self, api_key):
         openai.api_key = (
-            "Ask"
-            "Ben"
-            "For"
-            "Key"
+            "testKey"
         )
 
     def get_best_move(self, board):
@@ -38,6 +35,7 @@ class ConnectFourAI:
                 }
             ]
         )
+        print(board_string)
         suggested_move = response.choices[0].message['content'].strip()
         if suggested_move.isdigit() and 1 <= int(suggested_move) <= 7:
             print(int(suggested_move))
