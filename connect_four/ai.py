@@ -1,8 +1,5 @@
 """
 AI module to handle interactions with chatGPT
-Note: I currently have some parts commented and
-replaced so that I don't need the api key to test
-features.
 """
 
 import openai
@@ -11,9 +8,10 @@ import openai
 class ConnectFourAI:
     def __init__(self, api_key):
         openai.api_key = (
-            "InsertAPIKey"
-            "InsertAPIKey"
-            "InsertAPIKey"
+            "Ask"
+            "Ben"
+            "For"
+            "Key"
         )
 
     def get_best_move(self, board):
