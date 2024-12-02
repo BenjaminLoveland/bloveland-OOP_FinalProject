@@ -1,5 +1,6 @@
 let board = []; // Game board
 let currentPlayer = 1; // Player 1 starts
+let gameActive = true; // Track if the game is still active
 
 // Render the game board
 function renderBoard() {
@@ -20,8 +21,8 @@ function renderBoard() {
                 cellDiv.classList.add('player2');
             }
 
-            // Allow player interaction only if it's their turn
-            if (currentPlayer === 1 && cell === 0) {
+            // Allow player interaction only if it's their turn and game is active
+            if (currentPlayer === 1 && cell === 0 && gameActive) {
                 cellDiv.addEventListener('click', () => handlePlayerMove(colIndex));
             }
 
@@ -34,17 +35,21 @@ function renderBoard() {
 
 // Handle player move
 function handlePlayerMove(colIndex) {
-    if (currentPlayer !== 1) {
-        alert("It's not your turn!");
+    if (!gameActive || currentPlayer !== 1) {
+        alert("It's not your turn or the game is over!");
         return;
     }
 
     if (makeMove(colIndex, 1)) {
         renderBoard();
-        // Pass the turn to ChatGPT
-        currentPlayer = 2;
-        console.log("Player has moved. Passing turn to ChatGPT...");
-        fetchChatGPTMove(); // Fetch ChatGPT's move
+        checkWinner().then(winner => {
+            if (!winner && gameActive) {
+                // Pass the turn to ChatGPT
+                currentPlayer = 2;
+                console.log("Player has moved. Passing turn to ChatGPT...");
+                fetchChatGPTMove(); // Fetch ChatGPT's move
+            }
+        });
     } else {
         alert('This column is full! Choose a different one.');
     }
@@ -63,6 +68,8 @@ function makeMove(colIndex, player) {
 
 // Fetch ChatGPT's move
 function fetchChatGPTMove() {
+    if (!gameActive) return;
+
     fetch('/get-move', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -80,18 +87,54 @@ function fetchChatGPTMove() {
                 return;
             }
 
+            if (data.winner) {
+                alert('ChatGPT wins!');
+                gameActive = false;
+                return;
+            }
+
             const colIndex = data.move - 1; // Convert 1-based column to 0-based index
             if (makeMove(colIndex, 2)) {
-                currentPlayer = 1; // Switch back to Player 1's turn
                 renderBoard();
+                checkWinner().then(winner => {
+                    if (!winner && gameActive) {
+                        currentPlayer = 1; // Switch back to Player 1's turn
+                        console.log("ChatGPT has moved. Player's turn...");
+                    }
+                });
             } else {
                 console.error(`ChatGPT tried to place a piece in column ${colIndex + 1}, which is full.`);
                 console.error(`ChatGPT's response: ${data.chatGPTResponse}`);
                 alert('ChatGPT attempted to place a piece in a full column!');
+                currentPlayer = 1; // Switch back to Player 1 to retry
             }
         })
         .catch(error => {
             console.error('Error fetching move from ChatGPT:', error);
+            currentPlayer = 1; // Switch back to Player 1 to retry
+        });
+    currentPlayer = 1;
+}
+
+// Check for a winner
+function checkWinner() {
+    return fetch('/check-winner', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ board: board })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.winner) {
+                alert(`${data.winner === 1 ? 'Player' : 'ChatGPT'} wins!`);
+                gameActive = false; // Stop the game
+                return true;
+            }
+            return false;
+        })
+        .catch(error => {
+            console.error('Error checking for winner:', error);
+            return false;
         });
 }
 
@@ -106,6 +149,7 @@ document.getElementById('startGame').addEventListener('click', () => {
             console.log("New game started:", data.board);
             board = data.board; // Initialize the board
             currentPlayer = 1; // Player 1 starts
+            gameActive = true; // Game is active
             document.getElementById('gameStatus').innerText = data.message;
             renderBoard(); // Render the initial game board
         })

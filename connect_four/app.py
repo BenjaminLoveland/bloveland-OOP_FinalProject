@@ -29,7 +29,7 @@ def start_game():
         return jsonify({"message": "New game started!", "board": game.board})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
 
 @app.route('/get-move', methods=['POST'])
 def get_move():
@@ -47,12 +47,28 @@ def get_move():
             return jsonify({"error": "AI suggested a full column"}), 500
 
         game.make_move(col_index)
-        """
         winner = game.check_winner()
         if winner != 0:
-            return: # I'm afraid I don't know html or js.
-        """
+            return jsonify({"winner": winner})
+
         return jsonify({"move": col_index + 1})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/check-winner', methods=['POST'])
+def check_winner():
+    """
+    Checks if there is a winner in the current game.
+    """
+    try:
+        data = request.json
+        if not data or "board" not in data:
+            return jsonify({"error": "Invalid board data"}), 400
+
+        game.board = data['board']
+        winner = game.check_winner()
+        return jsonify({"winner": winner})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
