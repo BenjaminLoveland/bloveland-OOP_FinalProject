@@ -74,7 +74,39 @@ class Game:
         self._board = [
             [0 for _ in range(self._COLUMNS)] for _ in range(self._ROWS)]
         self._current_player = 1
-
+"""
+    def check_winner(self) -> int:
+        """
+        #Checks if there is a winner, returns 1 or 2 if a player wins, 0 if not.
+        """
+        for row in range(self._ROWS):
+            for column in range(self._COLUMNS):
+                if self._board[row][column] != 0:
+                    # Horizontal Check (-)
+                    if column + 3 < self._COLUMNS and all(
+                        self._board[row][column + i] == self._board[row][column]
+                        for i in range(4)
+                    ):
+                        return self._board[row][column]
+                    # Vertical Check (|)
+                    if row + 3 < self._ROWS and all(
+                        self._board[row + i][column] == self._board[row][column]
+                        for i in range(4)
+                    ):
+                        return self._board[row][column]
+                    # Diagonal Check (/)
+                    if row + 3 < self._ROWS and column + 3 < self.COLUMNS and all(
+                        self._board[row + i][column + i] == self._board[row][column]
+                        for i in range(4)
+                    ):
+                        return self._board[row][column]
+                    # Diagonal Check (\)
+                    if row - 3 >= 0 and column + 3 < self._COLUMNS and all(
+                        self._board[row - i][column + i] == self._board[row][column]
+                        for i in range(4)
+                    ):
+                        return self._board[row][column]
+        return 0"""
     def make_move(self, column: int) -> Tuple[int, int]:
         """
         Make a move.
