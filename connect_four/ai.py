@@ -8,7 +8,7 @@ import openai
 class ConnectFourAI:
     def __init__(self, api_key):
         openai.api_key = (
-            "testKey"
+            
         )
 
     def get_best_move(self, board):
@@ -21,7 +21,9 @@ class ConnectFourAI:
                     "content": (
                     "You are a Connect 4 game assistant. Respond with the best column (1 to 7) "
                     "for the next move. Ensure your message only contains the number of the "
-                    "column the next move should go into, and nothing more."
+                    "column the next move should go into, and nothing more. Your goal is to win "
+                    "the game by placing 4 pieces in a row, either horizontally, diagonally, or "
+                    "vertically."
                     ),
                 },
                 {
