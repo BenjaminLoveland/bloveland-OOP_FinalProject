@@ -1,19 +1,35 @@
-@startuml views
+@startuml Connect4Game
 
-class Connect4Board
-class Player
+class Game
+class ConnectFourAI
 class GameController
-class ChatGPTService
-class MoveGenerator
+class Player
+class WebInterface
+
+' -- Attributes and Methods --
+Game : +board : List[List[int]]
+Game : +current_player : int
+Game : +make_move(column: int) : Tuple[int, int]
+Game : +is_column_full(column: int) : bool
+Game : +reset_board() : None
+
+ConnectFourAI : +get_best_move(board: List[List[int]]) : int
+
+GameController : +start_game() : Dict
+GameController : +get_move(board: List[List[int]]) : Dict
+GameController : +update_board() : None
+
+WebInterface : +render_board() : None
+WebInterface : +handle_player_move(colIndex: int) : None
+WebInterface : +fetch_chatgpt_move() : None
 
 ' -- Basic Interactions --
-User --> GameController : Make move
-GameController --> Connect4Board : Update board
-GameController --> ChatGPTService : Request ChatGPT move
-ChatGPTService --> ChatGPT : Send current board state
-ChatGPT --> ChatGPTService : Return move
-ChatGPTService --> MoveGenerator : Parse response
-MoveGenerator --> GameController : Return move
-GameController --> Connect4Board : Update board with ChatGPT move
+User --> WebInterface : Interacts with UI
+WebInterface --> GameController : Handle move
+GameController --> Game : Update board state
+GameController --> ConnectFourAI : Request AI move
+ConnectFourAI --> GameController : Return move
+GameController --> Game : Update board with AI move
+Game --> WebInterface : Notify of changes
 
 @enduml

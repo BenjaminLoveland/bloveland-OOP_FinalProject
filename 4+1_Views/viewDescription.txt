@@ -1,37 +1,54 @@
 Logical View
 The key components of this program are:
-- UI Component
-    - Connect4Board represents the state of the game board
-    - Player represents either player, either human or ChatGPT
-    - GameController manages the games turns, win conditions, etc.
-- ChatGPT API Interaction
-    - ChatGPTService interacts with the GPT API and queries moves for the AI
-    - MoveGenerator parses the response from ChatGPT and returns its move
+- Game Logic:
+  - Game: Manages the state of the board, validates moves, and tracks the current player.
+  - ConnectFourAI: Contains the logic for interacting with ChatGPT to determine the AI's next move.
+- Web Interface:
+  - script.js: Renders the game board and handles user interactions.
+  - index.html: Provides the user interface for the game.
+  - style.css: Styles the board.
+- Backend Communication:
+  - app.py: Flask application that serves as the backend, routing requests between the UI and game logic.
+  - ai.py: Handles ChatGPT API interactions and processes AI-generated moves.
 
 Development View
-This is how the system will be organized.
-- Github Pages Files
-    - index.html to render game interface on website
-    - style.css to style the game layout
-    - app.js to handle game logic, webpage interaction, and ChatGPT communication
-- ChatGPTService
-    - A function inside app.js will handle backend calls to the ChatGPT API.
+This is how the system is organized:
+- Frontend Files:
+  - index.html: Hosts the visual interface for users.
+  - style.css: Defines the appearance of the board and other UI elements.
+  - script.js: Implements the dynamic behavior of the board and manages the game logic in the browser.
+- Backend Files:
+  - app.py: Flask application controlling backend processes and linking to the game and AI modules.
+  - game.py: Core game logic ensuring valid gameplay and tracking the game state.
+  - ai.py: Manages API interactions with ChatGPT to determine AI moves.
+- Development Practices:
+  - Factory pattern was used when creating and managing moves with ai.py.
+  - Observer pattern was used when designing the web interface and game object. The web interface observes
+    changes in the game object using the renderBoard function.
+  - State pattern was used when designing the game object and how it handles player turns. The game object
+    has different functionality depending on who's turn it is, and detects state changes in current_player
+    in order to facilitate the alternation of moves.
 
 Process View
-This view looks at the system's dynamic behavior during runtime.
-- User's Turn
-    - User chooses a move on the website UI
-    - Connect4Board gets updated, GameController checks win conditions
-    - GameController passes turn to ChatGPT if no win was determined
-- ChatGPT's Turn
-    - ChatGPTService sends the board state to the GPT API
-    - ChatGPT responds with next move
-    - MoveGenerator parses response, which GameController passes to Connect4Board
+This view looks at the system's dynamic behavior during runtime:
+- User's Turn:
+  - User selects a column to place their piece via the UI.
+  - script.js sends this action to the backend (app.py), which updates the board state using game.py.
+  - The updated board is rendered in the UI, and the turn is passed to ChatGPT if no winner is determined.
+- ChatGPT's Turn:
+  - The backend (app.py) sends the current board state to ai.py, which queries ChatGPT for the best move.
+  - ChatGPT responds with a move, which is validated by game.py.
+  - The move is applied to the board, and control returns to the user.
 
 Physical View
-This view describes how the system is actually implemented.
-The system is a simple web application hosted on Github Pages, with a client side ChatGPT API interaction.
+This view describes how the system is implemented:
+- The project is a full-stack application:
+  - Frontend: Delivered via a Flask web server, with dynamic behavior managed by JavaScript.
+  - Backend: Flask application hosted locally or on a cloud service (e.g., AWS, Heroku), coordinating gameplay and AI interactions.
+  - AI Integration: OpenAI's API for move generation, called via ai.py.
+- Hosted on a physical or virtual server, accessible through a web browser.
 
 Context View
 This system was primarily designed to be a project through which a group can excersise good OOP practices.
-It also functions as a simple singleplayer game. Anyone with the url can play Connect 4 against ChatGPT.
+It also functions as a simple singleplayer game. Hosting the application on your machine allows you to
+play Connect 4 against ChatGPT.
