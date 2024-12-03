@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation for Connect Four Application</title>
+</head>
+<body>
+
+    <h1>Connect Four Application Documentation</h1>
+
+    <h2>Modules</h2>
+
+    <!-- Documentation for ai.py -->
+    <h3>ai.py</h3>
+    <p>Module to handle interactions with ChatGPT for Connect Four AI decision-making.</p>
+
+    <h4>Class: ConnectFourAI</h4>
+    <p>Handles AI decision-making for the Connect Four game.</p>
+    <ul>
+        <li><strong>Methods:</strong>
+            <ul>
+                <li><code>__init__(api_key: str) -> None</code> - Initializes the AI with an OpenAI API key.</li>
+                <li><code>get_best_move(board: List[List[int]]) -> int</code> - Determines the best move for the AI based on the game board.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <!-- Documentation for app.py -->
+    <h3>app.py</h3>
+    <p>Module to run the Connect Four application using Flask.</p>
+
+    <h4>Flask Routes</h4>
+    <ul>
+        <li><code>index() -> str</code> - Renders the index page for the Connect Four game.</li>
+        <li><code>start_game() -> Response</code> - Starts a new Connect Four game.</li>
+        <li><code>get_move() -> Response</code> - Calculates and applies the AI's best move based on the current board.</li>
+        <li><code>check_winner() -> Response</code> - Checks if there is a winner in the current game.</li>
+    </ul>
+
+    <h4>Function: main()</h4>
+    <p>Runs the Flask application in debug mode.</p>
+
+    <!-- Documentation for game.py -->
+    <h3>game.py</h3>
+    <p>Module to handle gameplay logic for Connect Four.</p>
+
+    <h4>Class: Game</h4>
+    <p>Represents the gameplay logic for Connect Four.</p>
+    <ul>
+        <li><strong>Properties:</strong>
+            <ul>
+                <li><code>rows() -> int</code> - Gets the number of rows in the board.</li>
+                <li><code>columns() -> int</code> - Gets the number of columns in the board.</li>
+                <li><code>board() -> List[List[int]]</code> - Gets the game board.</li>
+                <li><code>board(new_board: List[List[int]]) -> None</code> - Sets the game board.</li>
+                <li><code>current_player() -> int</code> - Gets the current player.</li>
+                <li><code>current_player(player: int) -> None</code> - Sets the current player.</li>
+            </ul>
+        </li>
+        <li><strong>Methods:</strong>
+            <ul>
+                <li><code>__init__() -> None</code> - Initializes the game board and sets the current player.</li>
+                <li><code>reset_board() -> None</code> - Resets the game board to its initial state.</li>
+                <li><code>check_winner() -> int</code> - Checks if there is a winner. Returns 1 or 2 if a player wins, 0 otherwise.</li>
+                <li><code>make_move(column: int) -> Tuple[int, int]</code> - Makes a move for the current player in the specified column.</li>
+                <li><code>is_column_full(column: int) -> bool</code> - Checks if a specified column is full.</li>
+                <li><code>to_string() -> str</code> - Returns a string representation of the game board.</li>
+            </ul>
+        </li>
+    </ul>
+
+</body>
+</html>
