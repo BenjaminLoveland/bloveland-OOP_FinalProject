@@ -1,0 +1,12 @@
+
+@startuml
+class FlaskApp {
+    + index(): str
+    + start_game(): Response
+    + get_move(): Response
+    + check_winner(): Response
+}
+
+FlaskApp --> Game
+FlaskApp --> ConnectFourAI
+@enduml

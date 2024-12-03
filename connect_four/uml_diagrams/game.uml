@@ -1,0 +1,22 @@
+
+@startuml
+class Game {
+    - _ROWS: int
+    - _COLUMNS: int
+    - _board: List[List[int]]
+    - _current_player: int
+    + __init__(): None
+    + rows(): int
+    + columns(): int
+    + board(): List[List[int]]
+    + board(new_board: List[List[int]]): None
+    + current_player(): int
+    + current_player(player: int): None
+    + reset_board(): None
+    + check_winner(): int
+    + make_move(column: int): Tuple[int, int]
+    + is_column_full(column: int): bool
+    + to_string(): str
+}
+
+@enduml

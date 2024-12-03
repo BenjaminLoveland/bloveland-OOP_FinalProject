@@ -1,0 +1,8 @@
+@startuml
+class ConnectFourAI {
+    - api_key: str
+    + __init__(api_key: str): None
+    + get_best_move(board: List[List[int]]): int
+}
+
+@enduml
