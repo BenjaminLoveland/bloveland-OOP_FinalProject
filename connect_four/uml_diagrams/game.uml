@@ -15,7 +15,7 @@ class Game {
     + reset_board(): None
     + check_winner(): int
     + make_move(column: int): Tuple[int, int]
-    + is_column_full(column: int): boola
+    + is_column_full(column: int): bool
     + to_string(): str
 }
 
