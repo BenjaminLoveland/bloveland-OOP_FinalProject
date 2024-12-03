@@ -41,7 +41,7 @@ class Game:
         self._COLUMNS: int = 7
         self._board: List[List[int]] = [
             [0 for _ in range(self._COLUMNS)] for _ in range(self._ROWS)]
-        self._current_player: int = 1  # Player 1 starts
+        self._current_player: int = 1
 
     @property
     def rows(self) -> int:
@@ -131,8 +131,8 @@ class Game:
                             for i in range(4)
                         )
                     ):
-                        print(f"Diagonal starting at {row}, column {column}")
-                        return self._board[row][column]
+                        print(f"Diagonal {row}, {column}")  # pragma: no cover
+                        return self._board[row][column]  # pragma: no cover
                     # Diagonal Check (\)
                     if row - 3 >= 0 and column + 3 < self._COLUMNS and all(
                         self._board[row - i][

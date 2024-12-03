@@ -1,6 +1,5 @@
 import unittest
 from unittest.mock import patch
-from flask import Flask, jsonify
 from app import app
 from game import Game
 from ai import ConnectFourAI
@@ -144,6 +143,29 @@ class TestApp(unittest.TestCase):
 
         json_data = response.get_json()
         self.assertEqual(json_data['winner'], 1)
+
+    def test_index(self):
+        """
+        Tests the '/' route to make sure it renders the index page.
+        """
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<!DOCTYPE html>", response.data)
+
+    @patch.object(Game, 'check_winner')
+    def test_check_winner_error(self, mock_check_winner):
+        """
+        Tests the '/check-winner' route when an exception occurs.
+        """
+        mock_check_winner.side_effect = Exception("Test exception")
+
+        data = {"board": [[0] * 7 for _ in range(6)]}
+
+        response = self.app.post('/check-winner', json=data)
+        self.assertEqual(response.status_code, 500)
+
+        json_data = response.get_json()
+        self.assertEqual(json_data['error'], "Test exception")
 
 
 if __name__ == '__main__':

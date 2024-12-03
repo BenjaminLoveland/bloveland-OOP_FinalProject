@@ -4,7 +4,6 @@ Module for Unittesting of ai.py
 
 import unittest
 from unittest.mock import patch, MagicMock
-from hypothesis import given, strategies as st
 
 from ai import ConnectFourAI
 

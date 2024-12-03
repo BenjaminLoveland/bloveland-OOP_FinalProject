@@ -3,7 +3,7 @@ Module for Unittesting of game.py
 """
 
 import unittest
-from hypothesis import given, strategies as st
+from hypothesis import given, strategies as st  # type: ignore
 
 from game import Game
 
@@ -175,6 +175,16 @@ class TestGame(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self.game.current_player = 0
+
+    def test_current_player_setter_valid(self):
+        """
+        Test that setting updates the player number.
+        """
+        self.game.current_player = 1
+        self.assertEqual(self.game.current_player, 1)
+
+        self.game.current_player = 2
+        self.assertEqual(self.game.current_player, 2)
 
     def test_check_winner_no_winner(self):
         """

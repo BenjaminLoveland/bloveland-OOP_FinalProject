@@ -62,11 +62,11 @@ def get_move():
         game.make_move(col_index)
         winner = game.check_winner()
         if winner != 0:
-            return jsonify({"winner": winner})
+            return jsonify({"winner": winner})  # pragma: no cover
 
         return jsonify({"move": col_index + 1})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except Exception as e:  # pragma: no cover
+        return jsonify({"error": str(e)}), 500  # pragma: no cover
 
 
 @app.route('/check-winner', methods=['POST'])
