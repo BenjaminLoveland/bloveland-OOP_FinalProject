@@ -18,7 +18,7 @@ type:
 	mypy $(SOURCE_FILES)
 
 uml:
-	python -m plantuml $(UML_FILES)
+	java -jar $(UML_JAR) $(UML_FILES)
 
 test:
 	PYTHONPATH=. pytest --cov=ai --cov=game --cov=app --cov-report=term-missing tests/test_ai.py tests/test_game.py tests/test_app.py
