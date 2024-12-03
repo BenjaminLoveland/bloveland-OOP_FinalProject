@@ -1,0 +1,35 @@
+My evaluation is based on the final project rubric. I go into peer-review at the end.
+I don't type out the names of each category here, but assume each category number
+matches the category number on the final project rubric.
+
+1. 5/5 We use fundamental OOD concepts throughout the entire project.
+2. 5/5 We used 3 design patterns that are explained and mentioned in
+    views_description.txt.
+3. 5/5 We use comprehensive unit testing, and get over 95% minimum with mypy.
+4. 5/5 UML documention and HTML documentation is complete and generated with make all.
+5. 3/5 We managed the project through Github and a group text, we used 2 branches for
+    development (I had my own branch that I did all my work in, the other 2 used main)
+    and we didn't implement issues on Github.
+6. 4/5 We split up labor equally, but did not establish hard and fast rules for who
+    would do what at the beginning of the project. All group members were responsive
+    and willing to pickup work wherever needed, which was a huge help and a good
+    excersise in being flexible with a team.
+7. 5/5 Picked a good project to use OOD on, implemented API calling which we covered
+    once in the semester.
+8. 5/5 All members participated in our presentation and I believe we covered all our
+    bases during presentation. We also ran a demo to showcase our project's
+    functionality.
+9. 5/5 We used 4+1 views to explain our design to the audience, opting to lead with
+    that explanation at the beginning of our presentation.
+10. 3/10 We used a UI implemented with JavaScript, as well as implemented API calling
+    in our project, which I believe deserves some bonus points.
+
+GROUP EVALUATION
+
+Dillon - Was really responsive to our group chat and picked up a lot of work that was
+up in the air, for example he did our testing. I had no issues with him and would
+be more than willing to work with him again.
+
+Liam - Was also responsive to the group's requests, and covered all our UML
+documentation that's part of the makefile without needing to be asked by anyone. I
+also had no issus with him and would be more than willing to work with him again.

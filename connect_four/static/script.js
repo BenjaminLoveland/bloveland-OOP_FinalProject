@@ -1,12 +1,11 @@
-let board = []; // Game board
-let currentPlayer = 1; // Player 1 starts
-let gameActive = true; // Track if the game is still active
+let board = [];
+let currentPlayer = 1;
+let gameActive = true;
 
-// Render the game board
 function renderBoard() {
     console.log(`Rendering board... Current Player: ${currentPlayer === 1 ? "Player" : "ChatGPT"}`);
     const boardContainer = document.getElementById('board');
-    boardContainer.innerHTML = ''; // Clear the board
+    boardContainer.innerHTML = '';
 
     board.forEach((row, rowIndex) => {
         row.forEach((cell, colIndex) => {
@@ -21,7 +20,6 @@ function renderBoard() {
                 cellDiv.classList.add('player2');
             }
 
-            // Allow player interaction only if it's their turn and game is active
             if (currentPlayer === 1 && cell === 0 && gameActive) {
                 cellDiv.addEventListener('click', () => handlePlayerMove(colIndex));
             }
@@ -33,7 +31,6 @@ function renderBoard() {
     console.log("Board rendered successfully.");
 }
 
-// Handle player move
 function handlePlayerMove(colIndex) {
     if (!gameActive || currentPlayer !== 1) {
         alert("It's not your turn or the game is over!");
@@ -44,10 +41,9 @@ function handlePlayerMove(colIndex) {
         renderBoard();
         checkWinner().then(winner => {
             if (!winner && gameActive) {
-                // Pass the turn to ChatGPT
                 currentPlayer = 2;
                 console.log("Player has moved. Passing turn to ChatGPT...");
-                fetchChatGPTMove(); // Fetch ChatGPT's move
+                fetchChatGPTMove();
             }
         });
     } else {
@@ -55,7 +51,6 @@ function handlePlayerMove(colIndex) {
     }
 }
 
-// Make a move on the board
 function makeMove(colIndex, player) {
     for (let row = board.length - 1; row >= 0; row--) {
         if (board[row][colIndex] === 0) {
@@ -66,7 +61,6 @@ function makeMove(colIndex, player) {
     return false;
 }
 
-// Fetch ChatGPT's move
 function fetchChatGPTMove() {
     if (!gameActive) return;
 
@@ -78,7 +72,6 @@ function fetchChatGPTMove() {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                // Log the error and ChatGPT's response
                 console.error(`Error: ${data.error}`);
                 if (data.chatGPTResponse) {
                     console.error(`ChatGPT's response: ${data.chatGPTResponse}`);
@@ -93,12 +86,12 @@ function fetchChatGPTMove() {
                 return;
             }
 
-            const colIndex = data.move - 1; // Convert 1-based column to 0-based index
+            const colIndex = data.move - 1;
             if (makeMove(colIndex, 2)) {
                 renderBoard();
                 checkWinner().then(winner => {
                     if (!winner && gameActive) {
-                        currentPlayer = 1; // Switch back to Player 1's turn
+                        currentPlayer = 1;
                         console.log("ChatGPT has moved. Player's turn...");
                     }
                 });
@@ -106,17 +99,16 @@ function fetchChatGPTMove() {
                 console.error(`ChatGPT tried to place a piece in column ${colIndex + 1}, which is full.`);
                 console.error(`ChatGPT's response: ${data.chatGPTResponse}`);
                 alert('ChatGPT attempted to place a piece in a full column!');
-                currentPlayer = 1; // Switch back to Player 1 to retry
+                currentPlayer = 1;
             }
         })
         .catch(error => {
             console.error('Error fetching move from ChatGPT:', error);
-            currentPlayer = 1; // Switch back to Player 1 to retry
+            currentPlayer = 1;
         });
     currentPlayer = 1;
 }
 
-// Check for a winner
 function checkWinner() {
     return fetch('/check-winner', {
         method: 'POST',
@@ -127,7 +119,7 @@ function checkWinner() {
         .then(data => {
             if (data.winner) {
                 alert(`${data.winner === 1 ? 'Player' : 'ChatGPT'} wins!`);
-                gameActive = false; // Stop the game
+                gameActive = false;
                 return true;
             }
             return false;
@@ -138,7 +130,6 @@ function checkWinner() {
         });
 }
 
-// Start a new game
 document.getElementById('startGame').addEventListener('click', () => {
     fetch('/start-game', {
         method: 'POST',
@@ -147,11 +138,11 @@ document.getElementById('startGame').addEventListener('click', () => {
         .then(response => response.json())
         .then(data => {
             console.log("New game started:", data.board);
-            board = data.board; // Initialize the board
-            currentPlayer = 1; // Player 1 starts
-            gameActive = true; // Game is active
+            board = data.board;
+            currentPlayer = 1;
+            gameActive = true;
             document.getElementById('gameStatus').innerText = data.message;
-            renderBoard(); // Render the initial game board
+            renderBoard();
         })
         .catch(error => console.error('Error starting new game:', error));
 });

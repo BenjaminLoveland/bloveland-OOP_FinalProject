@@ -12,7 +12,7 @@ class ConnectFourAI {
 """
 
 
-import openai  # type: ignore
+import openai
 from typing import List
 
 

@@ -15,7 +15,7 @@ FlaskApp --> ConnectFourAI
 """
 
 
-from flask import Flask, render_template, request, jsonify  # type: ignore
+from flask import Flask, render_template, request, jsonify
 from game import Game
 from ai import ConnectFourAI
 
@@ -62,11 +62,11 @@ def get_move():
         game.make_move(col_index)
         winner = game.check_winner()
         if winner != 0:
-            return jsonify({"winner": winner})  # pragma: no cover
+            return jsonify({"winner": winner})
 
         return jsonify({"move": col_index + 1})
-    except Exception as e:  # pragma: no cover
-        return jsonify({"error": str(e)}), 500  # pragma: no cover
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route('/check-winner', methods=['POST'])
@@ -90,4 +90,4 @@ if __name__ == '__main__':
     """
     Runs the program in debug mode.
     """
-    app.run(debug=True)  # pragma: no cover
+    app.run(debug=True)
