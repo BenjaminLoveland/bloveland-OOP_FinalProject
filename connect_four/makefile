@@ -6,7 +6,7 @@ TEST_DIR=tests
 UML_DIR=uml_diagrams
 SOURCE_FILES=ai.py game.py app.py
 UML_FILES=$(UML_DIR)/ai.uml $(UML_DIR)/game.uml $(UML_DIR)/app.uml
-UML_JAR= # Update this path to the correct PlantUML JAR file location
+UML_JAR=uml_diagrams/plantuml.jar
 
 # Targets
 all: style type uml test
@@ -18,7 +18,7 @@ type:
 	mypy $(SOURCE_FILES)
 
 uml:
-	
+	python -m plantuml $(UML_FILES)
 
 test:
 	PYTHONPATH=. pytest --cov=ai --cov=game --cov=app --cov-report=term-missing tests/test_ai.py tests/test_game.py tests/test_app.py
