@@ -1,18 +1,36 @@
 """
-AI module to handle interactions with chatGPT
+AI module to handle interactions with ChatGPT for Connect Four.
+
+@startuml
+class ConnectFourAI {
+    - api_key: str
+    + __init__(api_key: str): None
+    + get_best_move(board: List[List[int]]): int
+}
+
+@enduml
 """
 
-import openai
-import random
+
+import openai  # type: ignore
+from typing import List
 
 
 class ConnectFourAI:
-    def __init__(self, api_key):
-        openai.api_key = (
-            "APIKey"
-        )
+    """
+    Handles AI decision-making for the Connect Four game.
+    """
 
-    def get_best_move(self, board):
+    def __init__(self, api_key: str) -> None:
+        """
+        Initializes the AI with an OpenAI API key.
+        """
+        openai.api_key = api_key
+
+    def get_best_move(self, board: List[List[int]]) -> int:
+        """
+        Determines the best move for the AI based on the game board.
+        """
         board_string = "\n".join([" ".join(map(str, row)) for row in board])
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
@@ -45,10 +63,7 @@ class ConnectFourAI:
                 }
             ]
         )
-        print(board_string)
         suggested_move = response.choices[0].message['content'].strip()
         if suggested_move.isdigit() and 1 <= int(suggested_move) <= 7:
-            print(int(suggested_move))
             return int(suggested_move) - 1
-        suggested_move = random.randint(0, 6)
         raise ValueError("Invalid move received from AI.")

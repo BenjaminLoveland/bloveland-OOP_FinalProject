@@ -1,11 +1,12 @@
-#Makefile for connect-four program
+# Makefile for connect-four program
 
 # Variables
 PYTHON=python3
-TEST_DIR=tests/test_project.py
+TEST_DIR=tests
 UML_DIR=uml_diagrams
 SOURCE_FILES=ai.py game.py app.py
 UML_FILES=$(UML_DIR)/ai.uml $(UML_DIR)/game.uml $(UML_DIR)/app.uml
+UML_JAR= # Update this path to the correct PlantUML JAR file location
 
 # Targets
 all: style type uml test
@@ -17,13 +18,12 @@ type:
 	mypy $(SOURCE_FILES)
 
 uml:
-	mkdir -p $(UML_DIR)
-	java -jar /home/codespace/.vscode-remote/extensions/jebbs.plantuml-2.18.1/plantuml.jar -o $(UML_DIR) $(SOURCE_FILES)
+	
 
 test:
-	PYTHONPATH=. pytest --cov=ai --cov=game --cov=app --cov-report=term-missing tests/test_project.py
+	PYTHONPATH=. pytest --cov=ai --cov=game --cov=app --cov-report=term-missing tests/test_ai.py tests/test_game.py tests/test_app.py
 
 run:
-	python3 app.py
+	$(PYTHON) app.py
 
-.PHONY: all style type uml run
+.PHONY: all style type uml test run

@@ -1,8 +1,21 @@
 """
-App module to run the Connect Four Applications
+App module to run the Connect Four application.
+
+@startuml
+class FlaskApp {
+    + index(): str
+    + start_game(): Response
+    + get_move(): Response
+    + check_winner(): Response
+}
+
+FlaskApp --> Game
+FlaskApp --> ConnectFourAI
+@enduml
 """
 
-from flask import Flask, render_template, request, jsonify
+
+from flask import Flask, render_template, request, jsonify  # type: ignore
 from game import Game
 from ai import ConnectFourAI
 
@@ -77,4 +90,4 @@ if __name__ == '__main__':
     """
     Runs the program in debug mode.
     """
-    app.run(debug=True)
+    app.run(debug=True)  # pragma: no cover
