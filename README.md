@@ -31,3 +31,5 @@ Initial Presentation Grade by Category:
 10) 0/10 (bonus)
 
 Total Score: 42/45
+
+Average Self Evaluation Score: 46/45
