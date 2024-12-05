@@ -17,3 +17,17 @@ Disclaimer:
 The project will not successfully place player 2's moves (ChatGPT) without an API key from
 Benjamin Loveland. If you need that functionality please email him. The game will still technically
 work, but the AI functionality won't and it will only play Connect 4 with one player.
+
+Initial Presentation Grade by Category:
+1) 5/5
+2) 4/5
+3) 5/5
+4) 5/5
+5) 3/5
+6) 5/5
+7) 5/5
+8) 5/5
+9) 5/5
+10) 0/10 (bonus)
+
+Total Score: 42/45
